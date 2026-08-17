@@ -1,0 +1,109 @@
+{
+  "info": {
+    "_postman_id": "visual-qa-backend-collection",
+    "name": "Visual QA Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "apiPrefix", "value": "/api/v1" },
+    { "key": "apiKey", "value": "change-me" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "X-API-Key", "value": "{{apiKey}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}{{apiPrefix}}/v1/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["{{apiPrefix}}","v1","health"]
+        }
+      }
+    },
+    {
+      "name": "Config",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+        "url": { "raw": "{{baseUrl}}{{apiPrefix}}/v1/config" }
+      }
+    },
+    {
+      "name": "Create Validation - New Feature (Current Sprint)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "workflow", "value": "current-sprint", "type": "text" },
+            { "key": "mode", "value": "new-feature", "type": "text" },
+            { "key": "image", "type": "file", "src": ["<path-to-image>"] }
+          ]
+        },
+        "url": { "raw": "{{baseUrl}}{{apiPrefix}}/v1/validations" }
+      }
+    },
+    {
+      "name": "Create Validation - Regression (Pixel)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "workflow", "value": "regression", "type": "text" },
+            { "key": "mode", "value": "pixel", "type": "text" },
+            { "key": "baseline", "type": "file", "src": ["<path-to-baseline>"] },
+            { "key": "current", "type": "file", "src": ["<path-to-current>"] }
+          ]
+        },
+        "url": { "raw": "{{baseUrl}}{{apiPrefix}}/v1/validations" }
+      }
+    },
+    {
+      "name": "Get Validation Status",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+        "url": { "raw": "{{baseUrl}}{{apiPrefix}}/v1/validations/:id" }
+      }
+    },
+    {
+      "name": "Get Findings",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+        "url": { "raw": "{{baseUrl}}{{apiPrefix}}/v1/validations/:id/findings" }
+      }
+    },
+    {
+      "name": "Get Score",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+        "url": { "raw": "{{baseUrl}}{{apiPrefix}}/v1/validations/:id/score" }
+      }
+    },
+    {
+      "name": "Download HTML Report",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+        "url": { "raw": "{{baseUrl}}{{apiPrefix}}/v1/validations/:id/report" }
+      }
+    },
+    {
+      "name": "List Artifacts",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "X-API-Key", "value": "{{apiKey}}" }],
+        "url": { "raw": "{{baseUrl}}{{apiPrefix}}/v1/validations/:id/artifacts" }
+      }
+    }
+  ]
+}

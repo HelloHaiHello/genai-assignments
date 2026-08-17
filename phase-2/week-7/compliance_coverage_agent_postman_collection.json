@@ -1,0 +1,331 @@
+{
+  "info": {
+    "_postman_id": "compliance-coverage-agent-collection",
+    "name": "Compliance Coverage Agent API",
+    "description": "Postman collection for Compliance Coverage Agent Backend APIs. Base URL: http://localhost:3000",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        }
+      },
+      "response": [
+        {
+          "name": "Health Response",
+          "originalRequest": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/health"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"success\": true,\n  \"data\": {\n    \"status\": \"ok\",\n    \"service\": \"compliance-coverage-agent-backend\"\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Scraping - GDPR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/scraping/gdpr",
+          "host": ["{{base_url}}"],
+          "path": ["api", "scraping", "gdpr"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [
+        {
+          "name": "Scrape GDPR Success",
+          "originalRequest": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/scraping/gdpr"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"success\": true,\n  \"standard\": \"GDPR\",\n  \"file\": \"data/gdpr_clauses_langchain.json\",\n  \"articlesProcessed\": 99,\n  \"invalidRecords\": 0,\n  \"skippedArticles\": []\n}"
+        }
+      ]
+    },
+    {
+      "name": "Scraping - EU AI Act",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/scraping/eu-ai",
+          "host": ["{{base_url}}"],
+          "path": ["api", "scraping", "eu-ai"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [
+        {
+          "name": "Scrape EU AI Act Success",
+          "originalRequest": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/scraping/eu-ai"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"success\": true,\n  \"standard\": \"EU AI Act\",\n  \"file\": \"data/eu_ai_act_clauses_langchain.json\",\n  \"articlesProcessed\": 113,\n  \"invalidRecords\": 0,\n  \"skippedArticles\": []\n}"
+        }
+      ]
+    },
+    {
+      "name": "Ingestion - GDPR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/ingestion/gdpr",
+          "host": ["{{base_url}}"],
+          "path": ["api", "ingestion", "gdpr"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [
+        {
+          "name": "Ingest GDPR Success",
+          "originalRequest": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/ingestion/gdpr"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"success\": true,\n  \"standard\": \"GDPR\",\n  \"file\": \"data/gdpr_clauses_langchain.json\",\n  \"totalRecords\": 99,\n  \"validRecords\": 99,\n  \"failedRecords\": 0,\n  \"matchedCount\": 0,\n  \"modifiedCount\": 0,\n  \"upsertedCount\": 99\n}"
+        }
+      ]
+    },
+    {
+      "name": "Ingestion - EU AI Act",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/ingestion/eu-ai",
+          "host": ["{{base_url}}"],
+          "path": ["api", "ingestion", "eu-ai"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [
+        {
+          "name": "Ingest EU AI Act Success",
+          "originalRequest": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/ingestion/eu-ai"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"success\": true,\n  \"standard\": \"EU AI Act\",\n  \"file\": \"data/eu_ai_act_clauses_langchain.json\",\n  \"totalRecords\": 113,\n  \"validRecords\": 113,\n  \"failedRecords\": 0,\n  \"matchedCount\": 0,\n  \"modifiedCount\": 0,\n  \"upsertedCount\": 113\n}"
+        }
+      ]
+    },
+    {
+      "name": "Retrieval - GDPR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/retrieval/gdpr",
+          "host": ["{{base_url}}"],
+          "path": ["api", "retrieval", "gdpr"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"story\": \"User can request full deletion of their account and data\",\n  \"topK\": 5,\n  \"searchMode\": \"vector\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [
+        {
+          "name": "Retrieve GDPR Success",
+          "originalRequest": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/retrieval/gdpr"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"success\": true,\n  \"standard\": \"GDPR\",\n  \"story\": \"User can request full deletion of their account and data\",\n  \"searchMode\": \"vector\",\n  \"matches\": [\n    {\n      \"clauseId\": \"Art. 17 GDPR\",\n      \"title\": \"Right to erasure\",\n      \"url\": \"https://gdpr-info.eu/...\",\n      \"vectorScore\": 0.92,\n      \"textScore\": 0,\n      \"rerankScore\": 0.98\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Retrieval - EU AI Act",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/retrieval/eu-ai",
+          "host": ["{{base_url}}"],
+          "path": ["api", "retrieval", "eu-ai"]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"story\": \"The system uses an AI model to automatically evaluate candidates for employment\",\n  \"topK\": 5,\n  \"searchMode\": \"vector\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [
+        {
+          "name": "Retrieve EU AI Act Success",
+          "originalRequest": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/retrieval/eu-ai"
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"success\": true,\n  \"standard\": \"EU AI Act\",\n  \"story\": \"The system uses an AI model to automatically evaluate candidates for employment\",\n  \"searchMode\": \"vector\",\n  \"matches\": [\n    {\n      \"clauseId\": \"Article 6\",\n      \"title\": \"Classification rules for high-risk AI systems\",\n      \"url\": \"https://artificialintelligenceact.eu/...\",\n      \"vectorScore\": 0.89,\n      \"textScore\": 0,\n      \"rerankScore\": 0.95\n    }\n  ]\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000"
+    }
+  ]
+}
