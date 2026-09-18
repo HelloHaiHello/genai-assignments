@@ -1,0 +1,468 @@
+{
+  "info": {
+    "name": "Swagger AI Agent API - Grouped Workflow",
+    "description": "Postman collection for the implemented Swagger AI Agent APIs, grouped by import, parsing, planning, generating, and testing workflows.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "specId",
+      "value": ""
+    },
+    {
+      "key": "specFilePath",
+      "value": "C:/absolute/path/to/openapi.yaml"
+    },
+    {
+      "key": "environmentId",
+      "value": ""
+    },
+    {
+      "key": "runId",
+      "value": ""
+    },
+    {
+      "key": "operationId",
+      "value": ""
+    },
+    {
+      "key": "environmentName",
+      "value": "qa"
+    }
+  ],
+  "item": [
+    {
+      "name": "import",
+      "item": [
+        {
+          "name": "Health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/health"
+          }
+        },
+        {
+          "name": "Import spec from URL",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "if (body.specId) pm.collectionVariables.set('specId', body.specId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source\": {\n    \"type\": \"url\",\n    \"url\": \"https://petstore.swagger.io/v2/swagger.json\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/spec/import"
+          }
+        },
+        {
+          "name": "Import spec from server file path",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "if (body.specId) pm.collectionVariables.set('specId', body.specId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source\": {\n    \"type\": \"file\",\n    \"path\": \"{{specFilePath}}\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/spec/import"
+          }
+        },
+        {
+          "name": "Import spec from Git (not implemented)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source\": {\n    \"type\": \"git\",\n    \"repo\": \"git@github.com:org/repo.git\",\n    \"ref\": \"main\",\n    \"filePath\": \"specs/api.yaml\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/spec/import"
+          }
+        }
+      ]
+    },
+    {
+      "name": "parsing",
+      "item": [
+        {
+          "name": "Validate raw OpenAPI content",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"{\\\"openapi\\\":\\\"3.0.0\\\",\\\"info\\\":{\\\"title\\\":\\\"Example API\\\",\\\"version\\\":\\\"1.0.0\\\"},\\\"paths\\\":{}}\"\n}"
+            },
+            "url": "{{baseUrl}}/spec/validate"
+          }
+        },
+        {
+          "name": "Validate imported spec",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"specId\": \"{{specId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/spec/validate"
+          }
+        },
+        {
+          "name": "Get spec metadata",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/spec/{{specId}}"
+          }
+        },
+        {
+          "name": "List operations",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "if (body[0] && body[0].operationId) pm.collectionVariables.set('operationId', body[0].operationId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/spec/{{specId}}/operations"
+          }
+        },
+        {
+          "name": "List tags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/spec/{{specId}}/tags"
+          }
+        }
+      ]
+    },
+    {
+      "name": "planning",
+      "item": [
+        {
+          "name": "Create environment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "if (body.environmentId) pm.collectionVariables.set('environmentId', body.environmentId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"specId\": \"{{specId}}\",\n  \"name\": \"{{environmentName}}\",\n  \"baseUrl\": \"https://api.example.com\",\n  \"defaultHeaders\": {},\n  \"authConfig\": {}\n}"
+            },
+            "url": "{{baseUrl}}/environment"
+          }
+        },
+        {
+          "name": "List environments for spec",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/spec/{{specId}}/environments"
+          }
+        },
+        {
+          "name": "Get environment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/environment/{{environmentId}}"
+          }
+        },
+        {
+          "name": "Update environment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"baseUrl\": \"https://qa.example.com\",\n  \"defaultHeaders\": {},\n  \"authConfig\": {}\n}"
+            },
+            "url": "{{baseUrl}}/environment/{{environmentId}}"
+          }
+        },
+        {
+          "name": "Plan full run",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const body = pm.response.json();",
+                  "if (body.runId) pm.collectionVariables.set('runId', body.runId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"specId\": \"{{specId}}\",\n  \"envName\": \"{{environmentName}}\",\n  \"selection\": {\n    \"mode\": \"full\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/execution/plan"
+          }
+        }
+      ]
+    },
+    {
+      "name": "generating",
+      "item": [
+        {
+          "name": "Generate Axios Jest tests",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"specId\": \"{{specId}}\",\n  \"selection\": {\n    \"mode\": \"full\"\n  },\n  \"options\": {\n    \"includeNegativeTests\": true,\n    \"includeAuthTests\": true,\n    \"includeBoundaryTests\": true\n  }\n}"
+            },
+            "url": "{{baseUrl}}/testgen/generate-axios-tests"
+          }
+        },
+        {
+          "name": "Preview generated Axios Jest tests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/testgen/spec/{{specId}}/preview"
+          }
+        },
+        {
+          "name": "Build payload from schema",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"specId\": \"{{specId}}\",\n  \"operationId\": \"{{operationId}}\",\n  \"mode\": \"schema-with-llm\",\n  \"hints\": {\n    \"locale\": \"IN\",\n    \"domain\": \"banking\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/llm/build-payload"
+          }
+        },
+        {
+          "name": "MCP generate Axios tests",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"specId\": \"{{specId}}\",\n  \"selection\": {\n    \"mode\": \"full\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/mcp/swagger/generate-axios-tests"
+          }
+        }
+      ]
+    },
+    {
+      "name": "testing",
+      "item": [
+        {
+          "name": "Run planned tests",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"runId\": \"{{runId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/execution/run"
+          }
+        },
+        {
+          "name": "Get run status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/execution/status/{{runId}}"
+          }
+        },
+        {
+          "name": "Retry failed tests",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"runId\": \"{{runId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/execution/retry-failed"
+          }
+        },
+        {
+          "name": "MCP list operations",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"specId\": \"{{specId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/mcp/swagger/list-operations"
+          }
+        },
+        {
+          "name": "MCP plan run",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"specId\": \"{{specId}}\",\n  \"envName\": \"{{environmentName}}\",\n  \"selection\": {\n    \"mode\": \"full\"\n  }\n}"
+            },
+            "url": "{{baseUrl}}/mcp/swagger/plan-run"
+          }
+        },
+        {
+          "name": "MCP execute operation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"specId\": \"{{specId}}\",\n  \"envName\": \"{{environmentName}}\",\n  \"operationId\": \"{{operationId}}\",\n  \"overrides\": {\n    \"pathParams\": {},\n    \"query\": {},\n    \"headers\": {},\n    \"body\": {}\n  }\n}"
+            },
+            "url": "{{baseUrl}}/mcp/swagger/execute-operation"
+          }
+        },
+        {
+          "name": "Delete environment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/environment/{{environmentId}}"
+          }
+        }
+      ]
+    }
+  ]
+}
